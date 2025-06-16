@@ -28,11 +28,8 @@ export default function Dashboard() {
       }
 
       try {
-        // Get the user's ID token
-        const idToken = await user.getIdToken();
-        
         // In a real app, you would fetch the user's profile from your backend
-        // For now, we'll just use a mock profile
+      // For now, we'll just use a mock profile
         setUserProfile({
           name: 'John Doe',
           email: user.email || '',

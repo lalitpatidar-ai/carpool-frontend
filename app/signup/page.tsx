@@ -96,14 +96,15 @@ export default function SignUpPage() {
       console.log('Verification code sent successfully');
       setConfirmation(result);
       setStep("code");
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as Error;
       console.error("Error sending code:", {
-        message: err.message,
-        code: err.code,
-        stack: err.stack,
-        details: err
+        message: error.message,
+        code: (error as { code?: string }).code,
+        stack: error.stack,
+        details: error
       });
-      setError(`Failed to send verification code: ${err.message || 'Unknown error'}`);
+      setError(`Failed to send verification code: ${error.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
@@ -157,9 +158,10 @@ export default function SignUpPage() {
       
       console.log('Profile saved successfully:', data);
       router.push("/dashboard");
-    } catch (err: any) {
-      console.error("Error submitting profile:", err);
-      setError(err.message || "Failed to save profile. Please try again.");
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error("Error submitting profile:", error);
+      setError(error.message || "Failed to save profile. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -246,7 +248,7 @@ export default function SignUpPage() {
                   />
                 </div>
                 <p className="mt-2 text-sm text-gray-500">
-                  We've sent a verification code to +91{phone}
+                  We&apos;ve sent a verification code to +91{phone}
                 </p>
               </div>
 
@@ -271,7 +273,7 @@ export default function SignUpPage() {
 
           {step === "profile" && (
             <ProfileForm 
-              token={idToken} 
+              
               onSubmit={handleProfileSubmit} 
               loading={loading}
             />
@@ -285,11 +287,9 @@ export default function SignUpPage() {
 }
 
 function ProfileForm({ 
-  token, 
   onSubmit,
   loading 
 }: { 
-  token: string | null;
   onSubmit: (data: FormData) => Promise<void>;
   loading: boolean;
 }) {
