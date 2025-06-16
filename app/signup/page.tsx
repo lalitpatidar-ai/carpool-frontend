@@ -140,7 +140,7 @@ export default function SignUpPage() {
 
       console.log('Submitting profile data:', formData);
       
-      const response = await fetch('http://localhost:8001/submit-profile', {
+      const response = await fetch('https://carpool-backend-ymsm.onrender.com/submit-profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
